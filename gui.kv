@@ -1,0 +1,375 @@
+WindowManager:
+    MainWindow:
+    SecondWindow:
+    ThirdWindow:
+    FourthWindow:
+    ReportWindow:
+
+
+<MainWindow>:
+    name: "main"
+    chat: talk_now
+    education: education
+    resources: resources
+
+    GridLayout:
+        cols:1
+        size: root.width, root.height
+
+        GridLayout:
+            cols:2
+            Button:
+                id: education
+                text:"Education"
+                font_size: 20
+                background_color: 0, 1, 1, .4
+                on_release:
+                    app.root.current = "education"
+                    root.manager.transition.direction = "right"
+            Button:
+                id: resources
+                text:"Resources"
+                font_size: 20
+                background_color: 1, 0, 1 , .25
+                on_release:
+                    app.root.current = "resources"
+                    root.manager.transition.direction = "left"
+        GridLayout:
+            cols:3
+            size_hint: (.1, .1)
+            Button:
+                id: exit_app
+                text:"Exit"
+                font_size: 20
+                size_hint: (.05, .1)
+                color: (0.92, 0.45, 0, 1)
+                on_release:
+                    app.stop()
+
+            Button:
+                id: talk_now
+                text:"Talk Now"
+                font_size: 20
+                size_hint: (.1, .1)
+                color: (0.92, 0.45, 0, 1)
+                on_release:
+                    app.root.current = "second"
+                    root.manager.transition.direction = "left"
+            Button:
+                id: report_incident
+                text:"Report"
+                font_size: 20
+                size_hint: (.05, .1)
+                color: (0.92, 0.45, 0, 1)
+                on_release:
+                    app.root.current = "report"
+                    root.manager.transition.direction = "left"
+
+<Message@Label>:
+    text_size: self.size
+    valign: "center"
+    padding: 10,0
+    canvas.before:
+        Color:
+            rgba: (0, 0, .2, 1) if self.halign == "left" else (.2, 0, 0, 1)
+        Rectangle:
+            size: self.size
+            pos: self.pos
+
+<RV@RecycleView>:
+    viewclass: 'Message'
+    RecycleBoxLayout:
+        default_size: None, dp(56)
+        default_size_hint: 1, None
+        size_hint_y: None
+        height: self.minimum_height
+        orientation: 'vertical'
+
+<SecondWindow>:
+    name: "second"
+    send_btn: send_btn
+    message_text: message_text
+    start_chat: start_chat
+    chat_box: chat_box
+    connection_grid: connection_grid
+    exit_chat: exit_chat
+    orientation: 'vertical'
+
+    GridLayout:
+        id: connection_grid
+        cols: 1
+        GridLayout:
+            cols: 3
+            size_hint: (.1, .1)
+            Button:
+                id: exit_chat
+                text: "Leave"
+                font_size: 20
+                size_hint: (.130, .1)
+                color: (0.92, 0.45, 0, 1)
+                background_color: (1,1,1,1)
+                on_release:
+#                    app.root.current = "main"
+#                    root.manager.transition.direction = "right"
+                    root.leave_chat()
+                    app.stop()
+
+
+            Label:
+                text: 'Chat History'
+                font_size: 20
+                size_hint: (.9, .1)
+                color: (0.92, 0.45, 0, 1)
+                background_color: 0, 0, 0, 0
+                background_normal: ""
+                canvas.before:
+                    Color:
+                        rgba: 128,0,128,0.25
+                    RoundedRectangle:
+                        size: self.size
+                        pos: self.pos
+                        radius: [0]
+            Button:
+                id: start_chat
+                text: "Start Chatting"
+                font_size: 20
+                size_hint: (.3, .1)
+                color: (0.92, 0.45, 0, 1)
+                background_color: (1,1,1,1)
+                disabled: False
+                on_release:
+                    root.connect_to_server()
+        RV:
+            id: chat_box
+        GridLayout:
+            cols: 2
+            size_hint: (.1, .1)
+            TextInput:
+                id: message_text
+                hint_text: ""
+                font_size: 20
+                disabled: True
+            Button:
+                id: send_btn
+                text: 'Send'
+                font_size: 30
+                size_hint: (.2, .1)
+                color: (0.92, 0.45, 0, 1)
+                disabled: True
+                on_release: root.send_message()
+
+
+
+<ThirdWindow>
+    name: "education"
+
+    GridLayout:
+        cols:1
+        size: root.width, root.height
+
+    GridLayout:
+        cols:1
+        size: root.width, root.height
+
+        GridLayout:
+            cols:2
+
+            ScrollView:
+                do_scroll_x: False
+                do_scroll_y: True
+
+                Label:
+                    size_hint_y: None
+                    height: self.texture_size[1]
+                    text_size: self.width, None
+                    font_size: 20
+                    padding: 10, 10
+                    background_color: 0, 0, 0, 0
+                    background_normal: ""
+                    canvas.before:
+                        Color:
+                            rgba: 0, 128, 128, 0.15
+                        RoundedRectangle:
+                            size: self.size
+                            pos: self.pos
+                            radius: [0]  #---- This rounds the corners --- #
+                    text:
+                        '''Emotional & Behavioural Signs of Being Bullied\n   - Afraid to go to school or other activities\n   - Low self-esteem and makes negative comments'''
+
+
+        Button:
+            id: Return
+            text:"Return"
+            font_size: 20
+            size_hint: (.2, .1)
+            color: (0.92, 0.45, 0, 1)
+            on_release:
+                app.root.current = "main"
+                root.manager.transition.direction = "left"
+
+
+<FourthWindow>
+    name: "resources"
+
+    GridLayout:
+        cols:1
+        size: root.width, root.height
+
+        GridLayout:
+            cols:2
+
+            ScrollView:
+                do_scroll_x: False
+                do_scroll_y: True
+
+                Label:
+                    size_hint_y: None
+                    height: self.texture_size[1]
+                    text_size: self.width, None
+                    font_size: 20
+                    padding: 10, 10
+                    background_color: 0, 0, 0, 0
+                    background_normal: ""
+                    canvas.before:
+                        Color:
+                            rgba: 128,0,128,0.15
+                        RoundedRectangle:
+                            size: self.size
+                            pos: self.pos
+                    text:
+                        'Emotional & Behavioural Signs of Being Bullied\n' * 50
+
+        Button:
+            id: Return
+            text:"Return"
+            font_size: 20
+            size_hint: (.2, .1)
+            color: (0.92, 0.45, 0, 1)
+            on_release:
+                app.root.current = "main"
+                root.manager.transition.direction = "right"
+
+<ReportWindow>
+    name: "report"
+    user_name: user_name
+    user_email: user_email
+    user_desc: user_desc
+    feedback: feedback
+    orientation: "vertical"
+
+    GridLayout:
+        cols:1
+        size: root.width, root.height
+        GridLayout:
+            cols: 1
+            size_hint: (.1, .1)
+            Label:
+                text: 'Report an incident'
+                font_size: 20
+                size_hint: (.7, .1)
+                color: (0.9, 0.45, 0, 1)
+                background_color: 0, 0, 0, 0
+                background_normal: ""
+                canvas.before:
+                    Color:
+                        rgba: 128,0,128,0.25
+                    RoundedRectangle:
+                        size: self.size
+                        pos: self.pos
+                        radius: [0]
+        GridLayout:
+            cols: 2
+            size_hint: (.1, .1)
+            Label:
+                text: 'Name'
+                font_size: 20
+                size_hint: (.3, .1)
+                color: (0.92, 0.45, 0, 1)
+                background_color: 0, 0, 0, 0
+                background_normal: ""
+                canvas.before:
+                    Color:
+                        rgba: 128,0,128,00.25
+                    RoundedRectangle:
+                        size: self.size
+                        pos: self.pos
+                        radius: [0]
+            TextInput:
+                id: user_name
+                font_size: 22
+                multiline: False
+        GridLayout:
+            cols: 2
+            size_hint: (.1, .1)
+            Label:
+                text: 'Email'
+                font_size: 20
+                size_hint: (.3, .1)
+                color: (0.92, 0.45, 0, 1)
+                background_color: 0, 0, 0, 0
+                background_normal: ""
+                canvas.before:
+                    Color:
+                        rgba: 128,0,128,0.25
+                    RoundedRectangle:
+                        size: self.size
+                        pos: self.pos
+                        radius: [0]
+            TextInput:
+                id: user_email
+                font_size: 22
+                multiline: False
+        GridLayout:
+            cols: 2
+            Label:
+                text: 'Description'
+                font_size: 20
+                size_hint: (.3, .1)
+                color: (0.92, 0.45, 0, 1)
+                background_color: 0, 0, 0, 0
+                background_normal: ""
+                canvas.before:
+                    Color:
+                        rgba: 128,0,128,0.25
+                    RoundedRectangle:
+                        size: self.size
+                        pos: self.pos
+                        radius: [0]
+            TextInput:
+                id: user_desc
+                font_size: 25
+                multiline: True
+        GridLayout:
+            cols: 1
+            size_hint: (.130, .130)
+            Label:
+                id: feedback
+                text: ''
+                font_size: 20
+                color: (0.92, 0.45, 0, 1)
+                background_color: 0, 0, 0, 0
+                background_normal: ""
+                canvas.before:
+                    Color:
+                        rgba: 128,0,128,0.25
+                    RoundedRectangle:
+                        size: self.size
+                        pos: self.pos
+                        radius: [0]
+        GridLayout:
+            cols: 2
+            size_hint: (.130, .130)
+            Button:
+                text: "Return"
+                font_size: 20
+                size_hint: (.24, .1)
+                color: (0.92, 0.45, 0, 1)
+                on_release:
+                    app.root.current = "main"
+                    root.manager.transition.direction = "right"
+            Button:
+                text: 'Submit'
+                font_size: 20
+                size_hint: (.8, .1)
+                color: (0.92, 0.45, 0, 1)
+                on_release: root.submit_form(user_name.text, user_email.text, user_desc.text)
