@@ -1,8 +1,8 @@
 import re
-import socket
+import sys
 import random
+import socket
 import threading
-from time import sleep
 from kivy.app import App
 from kivy.lang import Builder
 from kivy.properties import ObjectProperty
@@ -10,6 +10,9 @@ from kivy.uix.screenmanager import ScreenManager, Screen
 
 new_id = f"#{random.randint(1000, 9999)}"
 client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+from_admin = ['']
+from_user = ['']
 
 
 class MainWindow(Screen):
@@ -28,12 +31,11 @@ class SecondWindow(Screen):
         self.message_text.hint_text = "Write a message."
         self.start_chat.text = "Connected"
         self.start_chat.background_color = (0, 1, 0, 3)
-        self.exit_chat.background_color = (1.5, 0, 0, .9)
-        self.exit_chat.color = (1, 1, 1, .6)
-        threading.Thread(target=self.received_message).start()
+        self.exit_chat.background_color = (1.5, 0, 0, 1)
+        threading.Thread(target=self.received).start()
         # threading.Thread(target=self.write).start()
 
-    def received_message(self):
+    def received(self):
         while True:
             if self.stop_conversations is True:
                 print("Stopped")
@@ -43,14 +45,16 @@ class SecondWindow(Screen):
                 if message == "8@!gwYY$oK7eTV5aRWjg":
                     print("Stop request acknowledged.")
                     self.stop_conversations = True
-                if message != "Y4mAB<3sr{Rp9!xTZ2yf":
+                if message == "ID":
+                    pass
+                if message != "8@!gwYY$oK7eTV5aRWjg" and message != "ID":
                     self.chat_box.data.append({"text": f"Server: {message}", "halign": "left"})
             except ValueError:
                 print(ValueError)
                 client.close()
                 break
 
-    def send_message(self):
+    def write(self):
         try:
             message = self.message_text.text
             if message.strip(" ") != "":
@@ -60,6 +64,15 @@ class SecondWindow(Screen):
         except ValueError:
             print(ValueError)
             client.close()
+
+    # def reset_status(self):
+    #     self.start_chat.disabled = False
+    #     self.send_btn.disabled = True
+    #     self.message_text.disabled = True
+    #     self.message_text.hint_text = ""
+    #     self.start_chat.text = "Start Chatting"
+    #     self.start_chat.background_color = (1, 1, 1, 1)
+    #     self.exit_chat.background_color = (1, 1, 1, 1)
 
     @staticmethod
     def leave_chat():
@@ -75,35 +88,25 @@ class FourthWindow(Screen):
 
 
 class ReportWindow(Screen):
-    @staticmethod
-    def connect_server():
-        global conn
-        conn = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        conn.connect(('127.0.0.1', 55550))
-        conn.send(new_id.encode('ascii'))
-        sleep(.01)
+    incidents = []
+    regular_expression = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b'
 
-    @staticmethod
-    def email_validator(email):
-        regular_expression = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b'
-        if re.fullmatch(regular_expression, email):
+    def email_validator(self, email):
+        if re.fullmatch(self.regular_expression, email):
             return True
 
     def submit_form(self, name, email, incident):
         if self.email_validator(email) is True:
             if name != "" and incident != "":
-                self.connect_server()
-                global conn
-                info = [new_id, name, email, incident]
-                conn.send("*In#8feAG7hJR2bm3fS".encode('ascii'))
-                for i in info:
-                    conn.send(i.encode('ascii'))
-                    sleep(.01)
-                conn.close()
+                nr = f"#{random.randint(1000, 9999)}"
+                case = {'nr': nr, 'name': name, 'email': email, 'incident': incident}
+                print(f"Incident: {nr}\nName: {name}\nEmail: {email}\nDescription: {incident}")
                 self.user_name.text = ""
                 self.user_email.text = ""
                 self.user_desc.text = ""
                 self.feedback.text = ""
+                self.incidents.append(case)
+                print(self.incidents)
             else:
                 self.feedback.text = "Please enter the remaining information."
         elif name == "" and incident == "":
@@ -119,7 +122,7 @@ class WindowManager(ScreenManager):
     pass
 
 
-kv = Builder.load_file("gui.kv")
+kv = Builder.load_file("gui1.kv")
 
 
 class ChatApp(App):
