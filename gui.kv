@@ -194,7 +194,7 @@ WindowManager:
                             pos: self.pos
                             radius: [0]  #---- This rounds the corners --- #
                     text:
-                        'Your text message here\n' * 100
+                        'Your text message here\n' * 50
 
         Button:
             id: Return
@@ -236,7 +236,7 @@ WindowManager:
                             size: self.size
                             pos: self.pos
                     text:
-                        'Your text message here\n' * 100
+                        'Your text message here\n' * 50
 
         Button:
             id: Return
@@ -371,5 +371,6 @@ WindowManager:
                 font_size: 20
                 size_hint: (.8, .1)
                 color: (0.92, 0.45, 0, 1)
+                on_press: root.connect_server()
                 on_release:
                     root.submit_form(user_name.text, user_email.text, user_desc.text)
