@@ -10,6 +10,7 @@ online_admins = []
 admins_id = []
 online_users = []
 users_id = []
+reports = []
 
 
 def forward_to_user(client):
@@ -19,6 +20,12 @@ def forward_to_user(client):
             if message.decode('utf-8') == "CRpa7Pf6@HMs^AH1z*8G":
                 print("Stop request received")
                 client.send("8@!gwYY$oK7eTV5aRWjg".encode('ascii'))
+            if message.decode('utf-8') == "*In#8feAG7hJR2bm3fS":
+                print("New report received.")
+                for i in range(6):
+                    info = client.recv(1024).decode('utf-8')
+                    print(info, end='\n')
+
             if len(online_admins) > 0:
                 online_admins[0].send(message)
         except:
