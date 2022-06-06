@@ -1,8 +1,8 @@
 import re
-import sys
 import random
 import socket
 import threading
+from time import sleep
 from kivy.app import App
 from kivy.lang import Builder
 from kivy.properties import ObjectProperty
@@ -88,6 +88,12 @@ class FourthWindow(Screen):
 
 
 class ReportWindow(Screen):
+    @staticmethod
+    def connect_server():
+        global conn
+        conn = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        conn.connect(('127.0.0.1', 55550))
+        conn.send(new_id.encode('ascii'))
     incidents = []
     regular_expression = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b'
 
@@ -98,15 +104,17 @@ class ReportWindow(Screen):
     def submit_form(self, name, email, incident):
         if self.email_validator(email) is True:
             if name != "" and incident != "":
-                nr = f"#{random.randint(1000, 9999)}"
-                case = {'nr': nr, 'name': name, 'email': email, 'incident': incident}
-                print(f"Incident: {nr}\nName: {name}\nEmail: {email}\nDescription: {incident}")
+                global conn
+                info = [new_id, name, email, incident]
+                conn.send("*In#8feAG7hJR2bm3fS".encode('ascii'))
+                for i in info:
+                    conn.send(i.encode('ascii'))
+                    sleep(.01)
+                conn.close()
                 self.user_name.text = ""
                 self.user_email.text = ""
                 self.user_desc.text = ""
                 self.feedback.text = ""
-                self.incidents.append(case)
-                print(self.incidents)
             else:
                 self.feedback.text = "Please enter the remaining information."
         elif name == "" and incident == "":
