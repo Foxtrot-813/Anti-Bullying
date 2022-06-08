@@ -1,6 +1,18 @@
 import socket
 import threading
+import sqlite3
 
+conn = sqlite3.connect('reports.db')
+cursor = conn.cursor()
+
+SQL = '''CREATE TABLE IF NOT EXISTS Reports
+                (ReportID INTEGER PRIMARY KEY AUTOINCREMENT,
+                 CaseNr TEXT NOT NULL,
+                 Name TEXT NOT NULL,
+                 Email TEXT NOT NULL,
+                 Description TEXT NOT NULL);'''
+cursor.execute(SQL,)
+conn.close()
 host = '127.0.0.1'
 port = 55550
 server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -20,11 +32,20 @@ def forward_to_user(client):
             if message.decode('utf-8') == "CRpa7Pf6@HMs^AH1z*8G":
                 print("Stop request received")
                 client.send("8@!gwYY$oK7eTV5aRWjg".encode('ascii'))
+
             if message.decode('utf-8') == "*In#8feAG7hJR2bm3fS":
+                case = {'nr': '', 'name': '', 'email': '', 'incident': ''}
                 print("New report received.")
-                for i in range(6):
-                    info = client.recv(1024).decode('utf-8')
-                    print(info, end='\n')
+                for k, v in case.items():
+                    case[k] = client.recv(1024).decode('utf-8')
+                sql = '''INSERT INTO Reports(CaseNr, Name, Email, Description)
+                                    VALUES (?, ?, ?, ?)'''
+                connection = sqlite3.connect('reports.db')
+                cursor_ = connection.cursor()
+                cursor_.execute(sql, (case['nr'], case['name'], case['email'], case['incident']))
+                connection.commit()
+                connection.close()
+                print("Successful.")
 
             if len(online_admins) > 0:
                 online_admins[0].send(message)
