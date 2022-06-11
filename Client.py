@@ -1,6 +1,6 @@
 import re
-import random
 import socket
+import random
 import threading
 from time import sleep
 from kivy.app import App
@@ -10,9 +10,6 @@ from kivy.uix.screenmanager import ScreenManager, Screen
 
 new_id = f"#{random.randint(1000, 9999)}"
 client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-
-from_admin = ['']
-from_user = ['']
 
 
 class MainWindow(Screen):
@@ -31,11 +28,12 @@ class SecondWindow(Screen):
         self.message_text.hint_text = "Write a message."
         self.start_chat.text = "Connected"
         self.start_chat.background_color = (0, 1, 0, 3)
-        self.exit_chat.background_color = (1.5, 0, 0, 1)
-        threading.Thread(target=self.received).start()
+        self.exit_chat.background_color = (1.5, 0, 0, .9)
+        self.exit_chat.color = (1, 1, 1, .6)
+        threading.Thread(target=self.received_message).start()
         # threading.Thread(target=self.write).start()
 
-    def received(self):
+    def received_message(self):
         while True:
             if self.stop_conversations is True:
                 print("Stopped")
@@ -45,16 +43,14 @@ class SecondWindow(Screen):
                 if message == "8@!gwYY$oK7eTV5aRWjg":
                     print("Stop request acknowledged.")
                     self.stop_conversations = True
-                if message == "ID":
-                    pass
-                if message != "8@!gwYY$oK7eTV5aRWjg" and message != "ID":
+                if message != "Y4mAB<3sr{Rp9!xTZ2yf":
                     self.chat_box.data.append({"text": f"Server: {message}", "halign": "left"})
             except ValueError:
                 print(ValueError)
                 client.close()
                 break
 
-    def write(self):
+    def send_message(self):
         try:
             message = self.message_text.text
             if message.strip(" ") != "":
@@ -64,15 +60,6 @@ class SecondWindow(Screen):
         except ValueError:
             print(ValueError)
             client.close()
-
-    # def reset_status(self):
-    #     self.start_chat.disabled = False
-    #     self.send_btn.disabled = True
-    #     self.message_text.disabled = True
-    #     self.message_text.hint_text = ""
-    #     self.start_chat.text = "Start Chatting"
-    #     self.start_chat.background_color = (1, 1, 1, 1)
-    #     self.exit_chat.background_color = (1, 1, 1, 1)
 
     @staticmethod
     def leave_chat():
@@ -130,7 +117,7 @@ class WindowManager(ScreenManager):
     pass
 
 
-kv = Builder.load_file("gui1.kv")
+kv = Builder.load_file("gui.kv")
 
 
 class ChatApp(App):
