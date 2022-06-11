@@ -3,7 +3,7 @@ import threading
 
 host = '127.0.0.1'
 port = 55550
-admin_id = f"#007"
+admin_id = "#007"
 client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 client.connect((host, port))
 
@@ -17,12 +17,12 @@ def received_msg():
             break
         try:
             message = client.recv(1024).decode('ascii')
-            if message == 'ID':
+            if message == 'Y4mAB<3sr{Rp9!xTZ2yf':
                 client.send(admin_id.encode('ascii'))
             if message == "CRpa7Pf6@HMs^AH1z*8G":
                 print("User has left the session.")
                 print("=" * 80)
-            if message != "ID" and message != "CRpa7Pf6@HMs^AH1z*8G":
+            if message != "Y4mAB<3sr{Rp9!xTZ2yf" and message != "CRpa7Pf6@HMs^AH1z*8G":
                 print(f"Received: {message}")
         except ValueError:
             client.close()
