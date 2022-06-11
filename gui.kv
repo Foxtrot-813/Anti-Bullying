@@ -133,7 +133,7 @@ WindowManager:
                 id: start_chat
                 text: "Start Chatting"
                 font_size: 20
-                size_hint: (.220, .1)
+                size_hint: (.3, .1)
                 color: (0.92, 0.45, 0, 1)
                 background_color: (1,1,1,1)
                 disabled: False
@@ -156,7 +156,7 @@ WindowManager:
                 size_hint: (.2, .1)
                 color: (0.92, 0.45, 0, 1)
                 disabled: True
-                on_release: root.write()
+                on_release: root.send_message()
 
 
 
