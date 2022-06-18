@@ -25,7 +25,7 @@ WindowManager:
                 background_color: 0, 1, 1, .4
                 on_release:
                     app.root.current = "education"
-                    root.manager.transition.direction = "left"
+                    root.manager.transition.direction = "right"
             Button:
                 id: resources
                 text:"Resources"
@@ -194,7 +194,8 @@ WindowManager:
                             pos: self.pos
                             radius: [0]  #---- This rounds the corners --- #
                     text:
-                        'Your text message here\n' * 50
+                        '''Emotional & Behavioural Signs of Being Bullied\n   - Afraid to go to school or other activities\n   - Low self-esteem and makes negative comments'''
+
 
         Button:
             id: Return
@@ -204,7 +205,7 @@ WindowManager:
             color: (0.92, 0.45, 0, 1)
             on_release:
                 app.root.current = "main"
-                root.manager.transition.direction = "right"
+                root.manager.transition.direction = "left"
 
 
 <FourthWindow>
@@ -236,7 +237,7 @@ WindowManager:
                             size: self.size
                             pos: self.pos
                     text:
-                        'Your text message here\n' * 50
+                        'Emotional & Behavioural Signs of Being Bullied\n' * 50
 
         Button:
             id: Return
@@ -371,6 +372,4 @@ WindowManager:
                 font_size: 20
                 size_hint: (.8, .1)
                 color: (0.92, 0.45, 0, 1)
-                on_press: root.connect_server()
-                on_release:
-                    root.submit_form(user_name.text, user_email.text, user_desc.text)
+                on_release: root.submit_form(user_name.text, user_email.text, user_desc.text)
