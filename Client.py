@@ -81,16 +81,18 @@ class ReportWindow(Screen):
         conn = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         conn.connect(('127.0.0.1', 55550))
         conn.send(new_id.encode('ascii'))
-    incidents = []
-    regular_expression = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b'
+        sleep(.01)
 
-    def email_validator(self, email):
-        if re.fullmatch(self.regular_expression, email):
+    @staticmethod
+    def email_validator(email):
+        regular_expression = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b'
+        if re.fullmatch(regular_expression, email):
             return True
 
     def submit_form(self, name, email, incident):
         if self.email_validator(email) is True:
             if name != "" and incident != "":
+                self.connect_server()
                 global conn
                 info = [new_id, name, email, incident]
                 conn.send("*In#8feAG7hJR2bm3fS".encode('ascii'))
