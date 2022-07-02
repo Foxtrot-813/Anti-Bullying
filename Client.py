@@ -63,7 +63,10 @@ class SecondWindow(Screen):
 
     @staticmethod
     def leave_chat():
-        client.send("CRpa7Pf6@HMs^AH1z*8G".encode('ascii'))
+        try:
+            client.send("CRpa7Pf6@HMs^AH1z*8G".encode('ascii'))
+        except:
+            print("Server is offline.")
 
 
 class ThirdWindow(Screen):
@@ -71,6 +74,7 @@ class ThirdWindow(Screen):
 
 
 class FourthWindow(Screen):
+
     pass
 
 
@@ -124,6 +128,7 @@ kv = Builder.load_file("gui.kv")
 
 class ChatApp(App):
     def build(self):
+        self.title = "Bullying Prevention"
         return kv
 
 
