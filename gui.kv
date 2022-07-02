@@ -194,8 +194,7 @@ WindowManager:
                             pos: self.pos
                             radius: [0]  #---- This rounds the corners --- #
                     text:
-                        '''Emotional & Behavioural Signs of Being Bullied\n   - Afraid to go to school or other activities\n   - Low self-esteem and makes negative comments'''
-
+                        '''Emotional & Behavioural Signs of Being Bullied\n  # Afraid to go to school or other activities\n  # Low self-esteem and makes negative comments\n  # Complains of feeling unwell (headaches and stomach aches)\n  # Lower interest in activities and lower performance at school\n  # Appears unhappy, irritable\n  # Trouble sleeping, nightmares\n  # Threats to hurt themselves or others\n\nEmotional & Behavioural Signs of Bullying Others\n  # Aggressive with parents, siblings, pets, and friends\n  # Low concern for others’ feelings\n  # Bossy and manipulative behaviour\n  # Unexplained objects or money\n  # Secretive about possessions and activities\n  # Easily frustrated and quick to anger\n\nRelationship Signs of Being Bullied\n  # Parents may be overprotective, restrictive\n  # Siblings may bully child at home\n  # Lonely and isolated at school\n  # Few friends at school or in neighbourhood\n\nRelationship Signs of Bullying Others\n  # Parents may model use of power and aggression by yelling, hitting or rejecting child\n  # Parents may model use of power and aggression with each other\n  # Siblings may bully child at home\n  # Child has friends who bully and are aggressive\n  # Child has trouble standing up to peer pressure'''
 
         Button:
             id: Return
@@ -210,7 +209,7 @@ WindowManager:
 
 <FourthWindow>
     name: "resources"
-
+    resources_text: resources_text
     GridLayout:
         cols:1
         size: root.width, root.height
@@ -223,6 +222,7 @@ WindowManager:
                 do_scroll_y: True
 
                 Label:
+                    id: resources_text
                     size_hint_y: None
                     height: self.texture_size[1]
                     text_size: self.width, None
@@ -236,9 +236,7 @@ WindowManager:
                         RoundedRectangle:
                             size: self.size
                             pos: self.pos
-                    text:
-                        'Emotional & Behavioural Signs of Being Bullied\n' * 50
-
+                    text: "Teens Against Bullying\nA website created by PACER’s National Bullying Prevention Center (PACER’s NBPC). Since 2006, PACER’s NBPC has actively led social change to prevent childhood bullying, so that all youth are safe and supported in their schools, communities, and online.\nLink: https://www.pacerteensagainstbullying.org/experiencing-bullying/cyber-bullying/\n\nStop Cyberbullying\nStopCyberbullying was the first cyberbullying prevention program in North America. Its specially-trained young volunteers design and deliver community programs to help their peers address cyberbullying.\nLink: http://www.stopcyberbullying.org/what_is_cyberbullying_exactly.html\n\nStop Bullying\nA federal government website managed by the U.S. Department of Health and Human Services 200 Independence Avenue, S.W. Washington, D.C. 20201\nLink: https://www.stopbullying.gov/cyberbullying/what-is-it/index.html\n\nUnicef\nUnited Nations International Children's Emergency Fund, now officially United Nations Children's Fund is an agency of the United Nations responsible for providing humanitarian and developmental aid to children worldwide.\nLink: https://www.unicef.org/end-violence/how-to-stop-cyberbullying\n\nKids health\nNemours Children's Health is committed to transforming the health of children by going beyond medicine to improve the health of the world in which every child lives. We founded KidsHealth.org in 1995.\nLink: https://kidshealth.org/en/teens/cyberbullying.html\n"
         Button:
             id: Return
             text:"Return"
